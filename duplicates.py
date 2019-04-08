@@ -1,6 +1,5 @@
 import os
 from collections import defaultdict
-# from colorama import Fore, Style  # Валл Ли сломался
 
 
 def get_file_candidates(start_path):
@@ -14,24 +13,20 @@ def get_file_candidates(start_path):
     return dup_candidates
 
 
-def find_and_out_duplicates(dup_candidates):
+def find_duplicates(start_path):
+    dup_candidates = get_file_candidates(start_path)
     dup_report = ''
-    green_print_bgn = ''    # f'{Fore.GREEN}'
-    green_print_end = ''    # f'{Style.RESET_ALL}'
     for filename, filesizes in dict(dup_candidates).items():
         for filesize, filepaths in dict(filesizes).items():
             if len(filepaths) > 1:
-                filepaths = '\n'.join(filepaths)
-                dup_report += '\n{}{}{} ({})\n\n{}\n'.\
-                    format(green_print_bgn, filename, green_print_end, filesize,
-                           filepaths)
+                dup_output = [filename, filesize, '\n'.join(filepaths)]
+                dup_report += '\n{d[0]} ({d[1]})\n\n{d[2]}\n'.format(d=dup_output)
     return dup_report
 
 
 if __name__ == '__main__':
     start_path = input("Input start path to find duplicates: ")
-    dup_candidates = get_file_candidates(start_path)
-    dup_report = find_and_out_duplicates(dup_candidates)
+    dup_report = find_duplicates(start_path)
     if dup_report == '':
         print("No matches")
     else:
