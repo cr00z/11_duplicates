@@ -14,7 +14,6 @@ def find_duplicates(start_path):
                 dup_candidates[filename.lower()][filesize].append(filepath)
             except FileNotFoundError:
                 pass
-            # print(filepath)
     green_print_bgn = f'{Fore.GREEN}'
     green_print_end = f'{Style.RESET_ALL}'
     for filename, filesizes in dict(dup_candidates).items():
