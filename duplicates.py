@@ -1,6 +1,6 @@
 import os
 from collections import defaultdict
-from colorama import Fore, Style
+# from colorama import Fore, Style  # Валл Ли сломался
 
 
 def find_duplicates(start_path):
@@ -14,8 +14,8 @@ def find_duplicates(start_path):
                 dup_candidates[filename.lower()][filesize].append(filepath)
             except FileNotFoundError:
                 pass
-    green_print_bgn = f'{Fore.GREEN}'
-    green_print_end = f'{Style.RESET_ALL}'
+    green_print_bgn = ''    # f'{Fore.GREEN}'
+    green_print_end = ''    # f'{Style.RESET_ALL}'
     for filename, filesizes in dict(dup_candidates).items():
         for filesize, filepaths in dict(filesizes).items():
             if len(filepaths) > 1:
