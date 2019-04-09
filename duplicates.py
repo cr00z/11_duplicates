@@ -2,32 +2,39 @@ import os
 from collections import defaultdict
 
 
-def get_file_candidates(start_path):
-    dup_candidates = defaultdict(lambda: defaultdict(list))
-    for directory, _, filenames in os.walk(start_path):
-        for filename in filenames:
-            filepath = os.path.join(directory, filename)
-            if os.path.exists(filepath):
-                filesize = os.path.getsize(filepath)
-                dup_candidates[filename.lower()][filesize].append(filepath)
-    return dup_candidates
+def get_file_locations(start_path):
+    file_locations = defaultdict(list)
+    for directory, _, file_names in os.walk(start_path):
+        for file_name in file_names:
+            file_path = os.path.join(directory, file_name)
+            if os.path.exists(file_path):
+                file_size = os.path.getsize(file_path)
+                file_locations_key = (file_name.lower(), file_size)
+                file_locations[file_locations_key].append(file_path)
+    return file_locations
 
 
 def find_duplicates(start_path):
-    dup_candidates = get_file_candidates(start_path)
-    dup_report = ''
-    for filename, filesizes in dict(dup_candidates).items():
-        for filesize, filepaths in dict(filesizes).items():
-            if len(filepaths) > 1:
-                dup_output = [filename, filesize, '\n'.join(filepaths)]
-                dup_report += '\n{d[0]} ({d[1]})\n\n{d[2]}\n'.format(d=dup_output)
-    return dup_report
+    file_locations = get_file_locations(start_path)
+    file_duplicates = dict()
+    for file_info, file_paths in dict(file_locations).items():
+        if len(file_paths) > 1:
+            file_duplicates[file_info] = file_paths
+    return file_duplicates
+
+
+def print_duplicates(file_duplicates):
+    for file_info, file_paths in file_duplicates.items():
+        print('\n{f[0]} ({f[1]})\n'.format(f=file_info))
+        print('\n'.join(file_paths))
 
 
 if __name__ == '__main__':
     start_path = input("Input start path to find duplicates: ")
-    dup_report = find_duplicates(start_path)
-    if dup_report == '':
-        print("No matches")
+    if not os.path.exists(start_path):
+        exit('Path not exists')
+    file_duplicates = find_duplicates(start_path)
+    if file_duplicates:
+        print_duplicates(file_duplicates)
     else:
-        print(dup_report)
+        print("No matches")
