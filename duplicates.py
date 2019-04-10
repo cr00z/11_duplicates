@@ -30,11 +30,11 @@ def print_duplicates(file_duplicates):
 
 
 if __name__ == '__main__':
-    start_path = input("Input start path to find duplicates: ")
+    start_path = input('Input start path to find duplicates: ')
     if not os.path.exists(start_path):
         exit('Path not exists')
     file_duplicates = find_duplicates(start_path)
     if file_duplicates:
         print_duplicates(file_duplicates)
     else:
-        print("No matches")
+        print('No matches')
