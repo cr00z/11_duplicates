@@ -9,7 +9,7 @@ def get_file_locations(start_path):
             file_path = os.path.join(directory, file_name)
             if os.path.exists(file_path):
                 file_size = os.path.getsize(file_path)
-                file_locations_key = (file_name.lower(), file_size)
+                file_locations_key = (file_name, file_size)
                 file_locations[file_locations_key].append(file_path)
     return file_locations
 
@@ -24,8 +24,8 @@ def find_duplicates(start_path):
 
 
 def print_duplicates(file_duplicates):
-    for file_info, file_paths in file_duplicates.items():
-        print('\n{f[0]} ({f[1]})\n'.format(f=file_info))
+    for (file_name, file_size), file_paths in file_duplicates.items():
+        print('\n{} ({})\n'.format(file_name, file_size))
         print('\n'.join(file_paths))
 
 
